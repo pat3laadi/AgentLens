@@ -13,6 +13,17 @@ AgentLens: a tool-using SEC-filings agent + evaluation/observability platform. R
 3. Run the checks below before declaring done. Report what you ran and the result — do not claim success from reading code.
 4. Update the requirement's status in `docs/REQUIREMENTS.md` (☐ → ☑) and note any deviation.
 
+## Multi-Model Architecture (Gemini, Claude, GPT)
+The agent loop (`agentlens_agent.llm`) supports Google Gemini, Anthropic Claude, and OpenAI GPT interchangeably via the `LLMClient` protocol:
+- **Google Gemini**: `GeminiClient` (`gemini-3.5-flash-lite`, `gemini-3.1-flash-lite`, `gemini-2.5-pro`)
+- **Anthropic Claude**: `AnthropicClient` (`claude-3-5-sonnet-latest`, `claude-3-7-sonnet-latest`, `claude-3-5-haiku-latest`)
+- **OpenAI GPT**: `OpenAIClient` (`gpt-4o`, `gpt-4o-mini`, `o1`, `o3-mini`)
+
+Run queries via CLI:
+- Single model: `uv run python scripts/run_query.py --provider [gemini|anthropic|openai] "question"`
+- Model Arena (Parallel 3-way run): `uv run python scripts/run_query.py --arena "question"`
+- Local Visual UI: Running at `http://localhost:8000` with interactive model dropdown and arena mode.
+
 ## Commands
 - Python: `make setup` · `make lint` · `make test` · `make contracts` (OpenAPI/JSON-Schema/migration checks)
 - Schema smoke test (Docker-free Postgres, needs Python 3.12): `make schema-smoke`

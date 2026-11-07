@@ -10,6 +10,8 @@ from agentlens_agent.config import AgentConfig, load_system_prompt
 from agentlens_agent.cost import PricingTable
 from agentlens_agent.llm.anthropic_client import AnthropicClient
 from agentlens_agent.llm.base import LLMClient
+from agentlens_agent.llm.gemini_client import GeminiClient
+from agentlens_agent.llm.openai_client import OpenAIClient
 from agentlens_agent.loop import AgentRunner
 from agentlens_agent.mcp_registry import McpToolRegistry
 
@@ -17,7 +19,10 @@ from agentlens_agent.mcp_registry import McpToolRegistry
 def build_llm(config: AgentConfig) -> LLMClient:
     if config.provider == "anthropic":
         return AnthropicClient(model=config.model)
-    # AG-04 (P1): add an OpenAI adapter implementing LLMClient.
+    if config.provider == "gemini":
+        return GeminiClient(model=config.model)
+    if config.provider in ("openai", "gpt"):
+        return OpenAIClient(model=config.model)
     raise ValueError(f"unsupported provider: {config.provider}")
 
 
